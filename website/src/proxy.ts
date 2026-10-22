@@ -1,4 +1,9 @@
-export { default } from "next-auth/middleware";
+import type { NextFetchEvent } from "next/server";
+import { type NextRequestWithAuth,withAuth } from "next-auth/middleware";
+
+export default function proxy(request: NextRequestWithAuth, event: NextFetchEvent) {
+  return withAuth(request, event);
+}
 
 /**
  * Guards these pages and redirects them to the sign in page.

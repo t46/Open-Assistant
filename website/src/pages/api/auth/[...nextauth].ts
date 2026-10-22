@@ -3,7 +3,6 @@ import { boolean } from "boolean";
 import { NextApiRequest, NextApiResponse } from "next";
 import type { AuthOptions } from "next-auth";
 import NextAuth from "next-auth";
-import { Provider } from "next-auth/providers";
 import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
 import EmailProvider from "next-auth/providers/email";
@@ -13,7 +12,7 @@ import prisma from "src/lib/prismadb";
 import { BackendUserCore } from "src/types/Users";
 import { generateUsername } from "unique-username-generator";
 
-const providers: Provider[] = [];
+const providers: AuthOptions["providers"] = [];
 
 // Register an email magic link auth method.
 providers.push(

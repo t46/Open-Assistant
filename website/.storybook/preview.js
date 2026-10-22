@@ -1,5 +1,6 @@
 import "!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css";
-import { RouterContext } from "next/dist/shared/lib/router-context";
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
+import { action } from "@storybook/addon-actions";
 import { initialize, mswDecorator } from "msw-storybook-addon";
 import { rest } from "msw";
 
@@ -7,7 +8,24 @@ import { rest } from "msw";
 initialize();
 
 // Provide the MSW addon decorator globally
-export const decorators = [mswDecorator];
+export const decorators = [
+  mswDecorator,
+  (Story, { parameters }) => {
+    const router = {
+      route: "/", pathname: "/", asPath: "/", basePath: "", query: {},
+      locale: "en", locales: ["en"], defaultLocale: "en",
+      isReady: true, isFallback: false, isPreview: false, isLocaleDomain: false,
+      push: async (...args) => { action("router.push")(...args); return true; },
+      replace: async (...args) => { action("router.replace")(...args); return true; },
+      prefetch: async () => {},
+      reload: action("router.reload"), back: action("router.back"),
+      forward: action("router.forward"), beforePopState: () => {},
+      events: { on: () => {}, off: () => {}, emit: action("router.events.emit") },
+      ...parameters.nextRouter,
+    };
+    return <RouterContext.Provider value={router}><Story /></RouterContext.Provider>;
+  },
+];
 
 const MOCK_VALID_LABELS= [
   {
@@ -41,9 +59,6 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
-  },
-  nextRouter: {
-    Provider: RouterContext.Provider,
   },
   msw: {
     handlers: {

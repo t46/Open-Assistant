@@ -27,8 +27,7 @@ jobs:
           cache-dependency-path: "**/requirements*.txt"
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
-
+          node-version: 24.22.1
       - run: cd oasst-shared && pip install -e .
 
       - run: cd oasst-shared && pip install -r requirements.dev.txt

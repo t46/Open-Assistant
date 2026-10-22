@@ -1,8 +1,5 @@
-# Note: node:16.18.0 works most reliably when using different platforms (namely
-# Mac M1) and avoids recent Prisma docker bugs that lead to segfaults.
-
 # Install dependencies only when needed
-FROM node:16.18.0 AS deps
+FROM node:24.22.1 AS deps
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
@@ -13,7 +10,7 @@ RUN \
   fi
 
 # Rebuild the source code only when needed
-FROM node:16.18.0 AS builder
+FROM node:24.22.1 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY ./website/ .
@@ -22,7 +19,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production image, copy all the files and run next
-FROM node:16.18.0 AS runner
+FROM node:24.22.1 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

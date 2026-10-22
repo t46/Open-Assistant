@@ -1,5 +1,5 @@
 import { type ThemeConfig, extendTheme } from "@chakra-ui/react";
-import { Styles } from "@chakra-ui/theme-tools";
+import type { StyleFunctionProps } from "@chakra-ui/theme-tools";
 
 import { colors } from "./colors";
 import { badgeTheme } from "./components/Badge";
@@ -31,8 +31,8 @@ const fonts = {
   body: "Inter",
 };
 
-const styles: Styles = {
-  global: (props) => ({
+const styles = {
+  global: (props: StyleFunctionProps) => ({
     "*": {
       transition: "background-color 200ms cubic-bezier(0.4, 0, 1, 1)",
       // bg: props.colorMode === "light" ? colors.light.bg : colors.dark.bg,

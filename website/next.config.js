@@ -19,9 +19,6 @@ const nextConfig = {
     // scrollRestoration: true,
   },
   i18n,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   async redirects() {
     if (process.env.MAINTENANCE_MODE !== "true") {
       return [];
