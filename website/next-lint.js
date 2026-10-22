@@ -10,12 +10,12 @@ async function npmLint() {
   let npmInstall;
   let npmRunLint;
   try {
-    npmInstall = await spawnSync("npm", ["install"], spawnOption);
+    npmInstall = await spawnSync("npm", ["ci", "--ignore-scripts", "--no-audit"], spawnOption);
     if (npmInstall.status !== 0) {
-      process.exit(npmInstall.status);
+      process.exit(npmInstall.status ?? 1);
     }
     npmRunLint = await spawnSync("npm", ["run lint"], spawnOption);
-    process.exit(npmRunLint.status);
+    process.exit(npmRunLint.status ?? 1);
   } catch (error) {
     console.error(error);
     process.exit(1);

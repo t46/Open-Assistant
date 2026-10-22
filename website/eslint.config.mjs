@@ -13,6 +13,12 @@ export default [
       "unused-imports/no-unused-imports": "warn",
       "simple-import-sort/imports": "warn",
       "simple-import-sort/exports": "warn",
+      // React Compiler is not enabled. Keep its new migration diagnostics visible
+      // without expanding the runtime security update into component rewrites.
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/static-components": "warn",
+      "react-hooks/immutability": "warn",
+      "react-hooks/refs": "warn",
       eqeqeq: "warn",
     },
   },

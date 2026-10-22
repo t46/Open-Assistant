@@ -90,6 +90,6 @@ repos:
         files: ^website/
         exclude: ^website/node_modules/
         types_or: [javascript, jsx, ts, tsx]
-        language: node
+        language: system
         pass_filenames: false
-        entry: website/next-lint.js
+        entry: node website/next-lint.js

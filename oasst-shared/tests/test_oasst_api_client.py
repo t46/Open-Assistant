@@ -4,24 +4,24 @@ from uuid import uuid4
 
 import aiohttp
 import pytest
+import pytest_asyncio
 from oasst_shared.api_client import OasstApiClient
 from oasst_shared.exceptions import OasstError, OasstErrorCode
 from oasst_shared.schemas import protocol as protocol_schema
 
 
-@pytest.fixture
-def oasst_api_client_mocked():
+@pytest_asyncio.fixture
+async def oasst_api_client_mocked():
     """
     A an oasst_api_client pointed at the mocked backend.
     Relies on ./scripts/backend-development/start-mock-server.sh
     being run.
     """
     client = OasstApiClient(backend_url="http://localhost:8080", api_key="123")
-    yield client
-    # TODO The fixture should close this connection, but there seems to be a bug
-    # with async fixtures and pytest.
-    # Since this only results in a warning, I'm leaving this for now.
-    # await client.close()
+    try:
+        yield client
+    finally:
+        await client.close()
 
 
 class MockClientSession(aiohttp.ClientSession):
@@ -34,13 +34,14 @@ class MockClientSession(aiohttp.ClientSession):
         return self.response
 
 
-@pytest.fixture
-def mock_http_session():
-    yield MockClientSession()
+@pytest_asyncio.fixture
+async def mock_http_session():
+    async with MockClientSession() as session:
+        yield session
 
 
-@pytest.fixture
-def oasst_api_client_fake_http(mock_http_session):
+@pytest_asyncio.fixture
+async def oasst_api_client_fake_http(mock_http_session):
     """
     An oasst_api_client that uses a mocked http session. No real requests are made.
     """
