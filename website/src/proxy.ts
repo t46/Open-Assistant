@@ -1,5 +1,5 @@
 import type { NextFetchEvent } from "next/server";
-import { type NextRequestWithAuth,withAuth } from "next-auth/middleware";
+import { type NextRequestWithAuth, withAuth } from "next-auth/middleware";
 
 export default function proxy(request: NextRequestWithAuth, event: NextFetchEvent) {
   return withAuth(request, event);
